@@ -1,0 +1,37 @@
+@import url("https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Spicy+Rice&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Spicy+Rice&display=swap");
+
+/* this is where I set a default font for my app */
+
+body {
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+/* this is where set a bg for the landing page */
+
+.landing-page {
+  background-image: url("./assets/Images/h-bg.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* this is where I style the title with a custom font */
+
+.title {
+  font-family: "Permanent Marker", serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+
+/* this is where I set a bg for the login page */
+
+.log-in-bg {
+    background-image: url("../src/assets/Images/login-bg.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
