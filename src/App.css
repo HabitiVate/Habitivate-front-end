@@ -35,3 +35,12 @@ body {
     background-position: center;
     background-repeat: no-repeat;
 }
+
+/* this is where I set a bg for the signup page */
+
+.sign-up {
+    background-image: url("../src/assets/Images/signup-bg.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}

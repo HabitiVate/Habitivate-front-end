@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Logo from "../../components/Logo";
+import { Link } from "react-router-dom";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -50,7 +51,7 @@ const Login = () => {
             <div className="mb-6">
               <label
                 htmlFor="password"
-                className="block text-sm font-medium text-gray-600"
+                className="block text-sm font-medium text-[#cecdcd]"
               >
                 Password
               </label>
@@ -81,15 +82,19 @@ const Login = () => {
             </a>
           </div>
           <div className="mt-2 text-center">
-            <span className="text-sm text-[#cecece]">
-              Don't have a habitivate account?{" "}
+            <span className="text-sm text-[#cecece] mr-2">
+              Don't have a habitivate account?
             </span>
-            <a
+
+
+            <Link to={"/signup"}>
+            <span
               href="/register"
               className="text-sm text-[#95af00] hover:underline hover:text-[#d8ee5dfb]"
             >
               Sign Up
-            </a>
+            </span></Link>
+
           </div>
         </div>
       </div>
