@@ -43,7 +43,7 @@ const SignUp = () => {
     } catch (error) {
       if (error.response) {
         if (error.response.status === 409) {
-          toast.error("User already exists. Please log in instead.");
+          toast.error("An account with this email already exists. Please log in instead");
         } else {
           toast.error("Failed to register. Please try again.");
         }
