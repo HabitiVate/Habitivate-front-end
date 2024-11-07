@@ -1,28 +1,52 @@
 import React, { useState } from "react";
 import Logo from "../../components/Logo";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { apiSignin } from "../../services/auth";
+import { toast } from "react-toastify";
 
 const Login = () => {
-  const [formData, setFormData] = useState({
-    usernameOrEmail: "",
-    password: "",
-  });
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Submit logic here
-    console.log("Form submitted", formData);
+
+    try {
+      const formData = new FormData(e.target);
+      setLoading(true);
+
+      const email = formData.get("email");
+      const password = formData.get("password");
+
+      const response = await apiSignin({ email, password });
+
+      if (response.status === 200) {
+        localStorage.setItem("token", response.data.accessToken);
+        toast.success("You are Logged In");
+        navigate("/habits-dashboard");
+      } else {
+        throw new Error("Login failed"); // Handle unexpected response codes
+      }
+    } catch (error) {
+      if (error.response) {
+        // Handle specific error cases based on status code
+        if (error.response.status === 401) {
+          toast.error("Incorrect email or password");
+        } else if (error.response.status === 404) {
+          toast.error("Account does not exist. Please sign up first.");
+        } else {
+          toast.error("Failed to Log in. Please try again.");
+        }
+      } else {
+        toast.error("Network error. Please try again later.");
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div className="log-in-bg h-screen md:h-[calc(100vh-20px)] m-2 md:m-[10px] rounded-xl shadow-2xl ">
+    <div className="log-in-bg h-screen md:h-[calc(100vh-20px)] m-2 md:m-[10px] rounded-xl shadow-2xl">
       <div className="w-full h-full flex items-center justify-center bg-[#353535da] rounded-xl">
         <div className="w-full max-w-md p-8 bg-transparent border-[4px] rounded shadow-md">
           <div className="mb-10">
@@ -32,17 +56,15 @@ const Login = () => {
           <form onSubmit={handleSubmit}>
             <div className="mb-4">
               <label
-                htmlFor="usernameOrEmail"
+                htmlFor="email"
                 className="block text-sm font-medium text-[#cecdcd]"
               >
-                Username or Email
+                Email
               </label>
               <input
                 type="text"
-                id="usernameOrEmail"
-                name="usernameOrEmail"
-                value={formData.usernameOrEmail}
-                onChange={handleChange}
+                id="email"
+                name="email"
                 required
                 className="w-full px-4 py-2 mt-1 border rounded-md focus:outline-none focus:ring focus:ring-[#95af00]"
                 placeholder="Username or Email"
@@ -59,8 +81,6 @@ const Login = () => {
                 type="password"
                 id="password"
                 name="password"
-                value={formData.password}
-                onChange={handleChange}
                 required
                 className="w-full px-4 py-2 mt-1 border rounded-md focus:outline-none focus:ring focus:ring-[#95af00]"
                 placeholder="Password"
@@ -68,9 +88,10 @@ const Login = () => {
             </div>
             <button
               type="submit"
-              className="w-full px-4 py-2 font-semibold text-white bg-[#95af00] rounded hover:bg-[#adc03efb] "
+              className="w-full px-4 py-2 font-semibold text-white bg-[#95af00] rounded hover:bg-[#adc03efb]"
+              disabled={loading}
             >
-              Log In
+              {loading ? "Loading..." : "Log In"}
             </button>
           </form>
           <div className="mt-4 text-center">
@@ -83,18 +104,13 @@ const Login = () => {
           </div>
           <div className="mt-2 text-center">
             <span className="text-sm text-[#cecece] mr-2">
-              Don't have a habitivate account?
+              Don't have a Habitivate account?
             </span>
-
-
             <Link to={"/signup"}>
-            <span
-              href="/register"
-              className="text-sm text-[#95af00] hover:underline hover:text-[#d8ee5dfb]"
-            >
-              Sign Up
-            </span></Link>
-
+              <span className="text-sm text-[#95af00] hover:underline hover:text-[#d8ee5dfb]">
+                Sign Up
+              </span>
+            </Link>
           </div>
         </div>
       </div>

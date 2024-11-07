@@ -4,6 +4,8 @@ import LandingPage from "./components/LandingPage";
 import Login from "./pages/Authentication/Login";
 import SignUp from "./pages/Authentication/Signup";
 import HabitsDashboard from "./layouts/HabitsLayout";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const router = createBrowserRouter([
   {
@@ -21,15 +23,14 @@ const router = createBrowserRouter([
   {
     path: "/habits-dashboard",
     element: <HabitsDashboard />,
-    children: [
-      
-    ]
+    children: [],
   },
 ]);
 
 function App() {
   return (
     <>
+      <ToastContainer />
       <RouterProvider router={router} />
     </>
   );
