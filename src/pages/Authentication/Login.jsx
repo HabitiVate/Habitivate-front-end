@@ -3,6 +3,7 @@ import Logo from "../../components/Logo";
 import { Link, useNavigate } from "react-router-dom";
 import { apiSignin } from "../../services/auth";
 import { toast } from "react-toastify";
+import Loader from "../../components/Loader";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -88,10 +89,10 @@ const Login = () => {
             </div>
             <button
               type="submit"
-              className="w-full px-4 py-2 font-semibold text-white bg-[#95af00] rounded hover:bg-[#adc03efb]"
+              className=" flex justify-center w-full px-4 py-2 font-semibold text-white bg-[#95af00] rounded hover:bg-[#adc03efb]"
               disabled={loading}
             >
-              {loading ? "Loading..." : "Log In"}
+              {loading ? <Loader size="30" /> : "Log In"}
             </button>
           </form>
           <div className="mt-4 text-center">

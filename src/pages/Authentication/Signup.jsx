@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { apiSignup } from "../../services/auth";
 import { toast } from "react-toastify";
 import { useState } from "react";
+import Loader from "../../components/Loader";
 
 const SignUp = () => {
   const [loading, setLoading] = useState(false);
@@ -43,7 +44,9 @@ const SignUp = () => {
     } catch (error) {
       if (error.response) {
         if (error.response.status === 409) {
-          toast.error("An account with this email already exists. Please log in instead");
+          toast.error(
+            "An account with this email already exists. Please log in instead"
+          );
         } else {
           toast.error("Failed to register. Please try again.");
         }
@@ -166,10 +169,10 @@ const SignUp = () => {
             </div>
             <button
               type="submit"
-              className="w-full px-4 py-2 font-semibold text-white bg-[#95af00] rounded hover:bg-[#adc03efb]"
+              className="flex justify-center w-full px-4 py-2 font-semibold text-white bg-[#95af00] rounded hover:bg-[#adc03efb]"
               disabled={loading}
             >
-              {loading ? "Loading..." : "Sign Up"}
+              {loading ? <Loader size="30" /> : "Sign Up"}
             </button>
           </form>
           <div className="mt-4 text-center">
