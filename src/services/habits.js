@@ -7,3 +7,8 @@ export const apiPostHabits = async (payload) =>
 
 export const apiDeleteHabits = async (habitId) =>
   apiClient.delete(`/habits/${habitId}`);
+
+export const apiUpdateHabit = async (habitId, payload) =>
+    apiClient.patch(`/habits/${habitId}`, payload);
+
+export const apiGetSingleHabit= async (habitId) => apiClient.get(`/habits/${habitId}`);

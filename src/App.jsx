@@ -9,6 +9,9 @@ import "react-toastify/dist/ReactToastify.css";
 import Profile from "./pages/Authentication/profile/Profile";
 import HabitsPost from "./pages/HabitsManagement/HabitsPost";
 import EditProfile from "./pages/Authentication/profile/EditProfile";
+import EditHabit from "./pages/HabitsManagement/EditHabit";
+import EditTodo from "./pages/TodosManagement/EditTodo";
+import TodoPost from "./pages/TodosManagement/TodoPost";
 
 const router = createBrowserRouter([
   {
@@ -37,6 +40,18 @@ const router = createBrowserRouter([
   {
     path: "/create-habits",
     element: <HabitsPost />,
+  },
+  {
+    path: "/create-todos",
+    element: <TodoPost />,
+  },
+  {
+    path: "/edit-habit/:habitId",
+    element: <EditHabit />,
+  },
+  {
+    path: "/edit-todo/:todoId",
+    element: <EditTodo />,
   },
 
   {

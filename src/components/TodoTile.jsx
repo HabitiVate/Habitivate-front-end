@@ -1,16 +1,10 @@
 import { useState, useEffect, useRef } from "react";
 import Modal from "react-modal";
-import EditHabit from "../pages/HabitsManagement/EditHabit";
+import EditTodo from "../pages/TodosManagement/EditTodo";
 
 Modal.setAppElement("#root"); // Set this to the root element of your app
 
-const HabitTile = ({
-  habit,
-  onDelete,
-  onMoveToTop,
-  onMoveToBottom,
-  refreshHabits,
-}) => {
+const TodoTile = ({ todo, onDelete, onMoveToTop, onMoveToBottom }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [showOptions, setShowOptions] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false); // Modal state
@@ -40,7 +34,7 @@ const HabitTile = ({
     setIsModalOpen(false);
   };
 
-  return habit ? (
+  return todo ? (
     <div
       className="relative bg-transparent border rounded-lg shadow-lg hover:border-[#95af00] hover:shadow-xl transition-shadow duration-300"
       onMouseEnter={() => setIsHovered(true)}
@@ -49,14 +43,12 @@ const HabitTile = ({
       <div className="rounded-lg overflow-hidden">
         <div className="tile flex justify-center h-20">
           <span className="p-4 bg-[#F2BE02] text-white">
-            <i className="fa-solid fa-plus"></i>
+            <input type="checkbox" />
           </span>
 
-          <p className="w-full px-2 py-1 bg-white">{habit?.title || "Untitled Habit"}</p>
-
-          <span className="p-4 bg-[#f2be02] text-white">
-            <i className="fa-solid fa-minus"></i>
-          </span>
+          <p className="w-full px-2 py-1 bg-white">
+            {todo?.title || "Untitled todo"}
+          </p>
         </div>
       </div>
 
@@ -86,7 +78,7 @@ const HabitTile = ({
             <li
               className="flex items-center cursor-pointer hover:bg-gray-100 p-2 rounded"
               onClick={() => {
-                onDelete(habit.id);
+                onDelete(todo.id);
                 setShowOptions(false);
               }}
             >
@@ -116,19 +108,19 @@ const HabitTile = ({
         </div>
       )}
 
-      {/* Edit Habit Modal */}
+      {/* Edit Todo Modal */}
       <Modal
         isOpen={isModalOpen}
         onRequestClose={closeModal}
-        contentLabel="Edit Habit"
+        contentLabel="Edit Todo"
         className="bg-white p-6 rounded-lg shadow-lg max-w-md mx-auto my-10"
         overlayClassName="fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center"
       >
-        {/* Render the EditHabit component with the habit ID */}
-        <EditHabit habitId={habit.id} closeModal={closeModal} />
+        {/* Render the EditTodo component with the Todo ID */}
+        <EditTodo todoId={todo.id} closeModal={closeModal} />
       </Modal>
     </div>
   ) : null;
 };
 
-export default HabitTile;
+export default TodoTile;
