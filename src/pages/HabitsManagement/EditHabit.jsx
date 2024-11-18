@@ -3,13 +3,14 @@ import { apiGetSingleHabit, apiUpdateHabit } from "../../services/habits";
 import { toast } from "react-toastify";
 import Button from "../../components/Button";
 import { useNavigate } from "react-router-dom";
+import editImg from "../../assets/Images/hab2.jpg"
 
 const EditHabit = ({ habitId, closeModal }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [duration, setDuration] = useState("");
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setDuration(e.target.value);
@@ -39,8 +40,7 @@ const EditHabit = ({ habitId, closeModal }) => {
       await apiUpdateHabit(habitId, formData);
       toast.success("Habit updated successfully");
       closeModal(); // Close modal after save
-      navigate("/habits-dashboard")
-
+      // navigate("/habits-dashboard")
     } catch (error) {
       console.log("Error updating habit", error);
       toast.error("Update failed");
@@ -48,8 +48,12 @@ const EditHabit = ({ habitId, closeModal }) => {
   };
 
   return (
-    <div className="max-w-md mx-auto bg-white p-6 rounded-lg shadow-lg">
+    <div className="max-w-md mx-auto bg-white p-6 rounded-lg shadow-lg sm:max-w-lg md:max-w-xl lg:max-w-2xl">
       <h2 className="text-xl font-semibold mb-4">Edit Habit</h2>
+
+      <div className="mb-5">
+        <img src={editImg} alt="Edit Habit" className="max-w-full max-h-full rounded mb-5" />
+      </div>
       <form onSubmit={handleSave}>
         <div className="mb-4">
           <label className="block text-gray-700 font-medium mb-2">Title</label>

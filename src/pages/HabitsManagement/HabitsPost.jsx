@@ -17,13 +17,10 @@ const HabitsPost = () => {
     }
   
     try {
-      
-      
       const data = {
         title: formData.get("title"),
         description: formData.get("description"),
         duration: formData.get("duration"),
-        
       };
   
       const response = await apiPostHabits(data);
@@ -35,17 +32,15 @@ const HabitsPost = () => {
       toast.error("Failed to create habit");
     }
   };
-  
 
   return (
     <form
       onSubmit={handleSubmit}
-      className="p-4 bg-white shadow-lg rounded-lg max-w-md mx-auto space-y-4"
+      className="p-4 bg-white shadow-lg rounded-lg max-w-md mx-auto space-y-4 sm:max-w-lg md:max-w-xl lg:max-w-2xl"
     >
-
-        <div className="w-full">
-            <img src={formPic} alt="" className="max-w-full max-h-full" />
-        </div>
+      <div className="w-full">
+        <img src={formPic} alt="Habit Creation" className="max-w-full max-h-full rounded mb-4" />
+      </div>
       <h2 className="text-xl font-semibold">Create Habit</h2>
 
       {/* Title Input */}
@@ -77,14 +72,14 @@ const HabitsPost = () => {
           name="duration"
           className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
-          <option value="daily">daily</option>
-          <option value="weekly">weekly</option>
-          <option value="Monthly">Monthly</option>
+          <option value="daily">Daily</option>
+          <option value="weekly">Weekly</option>
+          <option value="monthly">Monthly</option>
         </select>
       </div>
 
       <div className="w-full">
-      <Button text="Create" />
+        <Button text="Create" />
       </div>
     </form>
   );
