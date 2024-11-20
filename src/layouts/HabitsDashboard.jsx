@@ -149,7 +149,7 @@ const HabitsDashboard = () => {
         </header>
 
         {/* Search and Add Task Button */}
-        <div className="flex flex-col sm:flex-row justify-between items-center my-5 sm:my-3 gap-5 sm:gap-10">
+        <div className="flex flex-col sm:flex-row justify-around items-center my-5 sm:my-3 gap-5 sm:gap-10">
           <div className="w-full sm:w-[30%]">
             <Search />
           </div>
@@ -207,7 +207,9 @@ const HabitsDashboard = () => {
               </div>
 
               <p className="text-xs">These are your Habits</p>
-              <p className="text-xs">Habits can checked as much you can do them</p>
+              <p className="text-xs">
+                Habits can checked as much you can do them
+              </p>
             </div>
           </div>
 
@@ -266,7 +268,7 @@ const HabitsDashboard = () => {
         <Modal
           isOpen={isHabitModalOpen}
           onRequestClose={() => setHabitModalOpen(false)}
-          className="bg-white p-6 rounded shadow-lg max-w-lg mx-auto"
+          className="bg-white p-6 rounded shadow-lg max-w-lg mx-auto sm:max-w-md md:max-w-lg lg:max-w-xl px-4 sm:px-6 overflow-auto"
           overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"
         >
           <HabitsPost />
@@ -275,7 +277,7 @@ const HabitsDashboard = () => {
         <Modal
           isOpen={isTodoModalOpen}
           onRequestClose={() => setTodoModalOpen(false)}
-          className="bg-white p-6 rounded shadow-lg max-w-lg mx-auto"
+          className="bg-white p-6 rounded shadow-lg max-w-lg mx-auto sm:max-w-md md:max-w-lg lg:max-w-xl px-4 sm:px-6  "
           overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"
         >
           <TodoPost />
@@ -286,4 +288,3 @@ const HabitsDashboard = () => {
 };
 
 export default HabitsDashboard;
-
