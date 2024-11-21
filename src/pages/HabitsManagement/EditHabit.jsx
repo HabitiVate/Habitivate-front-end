@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { apiGetSingleHabit, apiUpdateHabit } from "../../services/habits";
 import { toast } from "react-toastify";
 import Button from "../../components/Button";
-import { useNavigate } from "react-router-dom";
 import editImg from "../../assets/Images/hab2.jpg"
 
 const EditHabit = ({ habitId, closeModal }) => {
@@ -10,7 +9,6 @@ const EditHabit = ({ habitId, closeModal }) => {
   const [description, setDescription] = useState("");
   const [duration, setDuration] = useState("");
 
-  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setDuration(e.target.value);
@@ -40,7 +38,6 @@ const EditHabit = ({ habitId, closeModal }) => {
       await apiUpdateHabit(habitId, formData);
       toast.success("Habit updated successfully");
       closeModal(); // Close modal after save
-      // navigate("/habits-dashboard")
     } catch (error) {
       console.log("Error updating habit", error);
       toast.error("Update failed");

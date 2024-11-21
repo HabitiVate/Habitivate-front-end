@@ -1,11 +1,10 @@
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
 import Button from "../../components/Button";
-import formPic from "../../assets/Images/habit-stick.jpg"
+import formPic from "../../assets/Images/habit-stick.jpg";
 import { apiPostTodos } from "../../services/todos";
 
-const TodoPost = () => {
-  const Navigate = useNavigate();
+const TodoPost = ({ onClose }) => {
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -28,7 +27,7 @@ const TodoPost = () => {
       const response = await apiPostTodos(data);
       console.log(response.data);
       toast.success("Successful");
-      Navigate("/habits-dashboard");
+      onClose();
     } catch (error) {
       console.log(error);
       toast.error("Failed to create Todo");

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import avatar from "../assets/Images/avatar.jpg";
+// import avatar from "../assets/Images/avatar.jpg";
 import Button from "../components/Button";
 import Search from "../components/Search";
 import { apiGetHabits, apiDeleteHabits } from "../services/habits";
@@ -12,15 +12,29 @@ import HabitsPost from "../pages/HabitsManagement/HabitsPost";
 import TodoPost from "../pages/TodosManagement/TodoPost";
 import Logo from "../components/Logo";
 import Footer from "../components/Footer";
+import { logout } from "../services/config";
+import { Link, useNavigate } from "react-router-dom";
+import TodoTile from "../components/TodoTile";
+import { apiDeleteDaily, apiGetDailies } from "../services/dailies";
+import DailyTile from "../components/DailyTile";
+import DailyPost from "../pages/DailiesManagement/DailyPost";
+import Loader from "../components/Loader";
+
+
+
 
 Modal.setAppElement("#root");
 
 const HabitsDashboard = () => {
+  const [loading, setLoading] = useState(false);
   const [habits, setHabits] = useState([]);
   const [todos, setTodos] = useState([]);
+  const [dailies, setDailies] = useState([]);
   const [userData, setUserData] = useState([]);
   const [isHabitModalOpen, setHabitModalOpen] = useState(false);
   const [isTodoModalOpen, setTodoModalOpen] = useState(false);
+  const [isDailyModalOpen, setDailyModalOpen] = useState(false);
+  const navigate = useNavigate();
 
   // Fetch user profile
   const getUserAccount = async () => {
@@ -36,15 +50,28 @@ const HabitsDashboard = () => {
   // Fetch habits
   const getAllHabits = async () => {
     try {
+      setLoading(true)
       const response = await apiGetHabits();
       console.log(response.data);
       setHabits(response.data);
     } catch (error) {
       console.log(error);
+    }finally {
+      setLoading(false)}
+  };
+
+  // fetch dailies
+  const getAllDailies = async () => {
+    try {
+      const response = await apiGetDailies();
+      console.log(response.data);
+      setDailies(response.data);
+    } catch (error) {
+      console.log(error);
     }
   };
 
-  // to get all todos
+  // fetch todos
   const getAllTodos = async () => {
     try {
       const response = await apiGetTodos();
@@ -89,6 +116,23 @@ const HabitsDashboard = () => {
     }
   };
 
+  // to delete a daily
+  const deleteDaily = async (dailyId) => {
+    try {
+      const confirmed = window.confirm(
+        "Are you sure you want to delete this todo?"
+      );
+      if (!confirmed) return;
+      const response = await apiDeleteDaily(dailyId);
+      console.log("deleted", response.data);
+      toast.success("Daily deleted successfully");
+      getAllDailies();
+    } catch (error) {
+      console.error("Delete Error:", error);
+      toast.error("Failed to delete Daily");
+    }
+  };
+
   // Move actions (currently placeholders)
   const handleMoveToTop = () => console.log("Move to Top");
   const handleMoveToBottom = () => console.log("Move to Bottom");
@@ -96,30 +140,43 @@ const HabitsDashboard = () => {
   useEffect(() => {
     getAllHabits();
     getAllTodos();
+    getAllDailies();
     getUserAccount();
   }, []);
+
+  const handleLogout = () => {
+    logout; // Call the logout function
+    const confirmed = window.confirm("Are you sure you want to log out?");
+    if (!confirmed) return;
+    navigate("/login"); // Redirect to the login page
+  };
 
   return (
     <section className="h-screen md:h-[calc(100vh-20px)] m-2 md:m-[10px] rounded-xl shadow-2xl p-3 overflow-auto scrollbar-thin scrollbar-thumb-[#ebd451e1] scrollbar-track-gray-300 hover:shadow-xl bg-[#F9F9F9]">
       <>
-        <nav>
-          <div className="flex justify-between w-full">
+        <>
+          <nav className="flex justify-between w-full items-center p-2">
             <div className="bg-[#2b2b2b] py-1 px-5 rounded-md">
               <Logo />
-            </div>{" "}
-            others logout
-          </div>
-        </nav>
+            </div>
+
+            <button className=" bg-slate-400" onClick={handleLogout}>
+              logout <i className="fa-solid fa-right-from-bracket"></i>
+            </button>
+          </nav>
+        </>
         {/* Header */}
         <header className="flex flex-col sm:flex-row items-center w-full h-[20%] px-3 py-2 rounded-sm shadow-md">
           <div className="h-full profile p-1 flex gap-5">
-            <div className="h-full">
-              <img
-                src={avatar}
-                alt="avatar"
-                className="max-w-full max-h-full rounded-full border-[4px] border-[white] shadow-lg"
-              />
-            </div>
+            <Link to={"/profile-page"}>
+              <div className="h-full">
+                <img
+                  src={`https://savefiles.org/${userData.avatar}?shareable_link=471`}
+                  alt="avatar"
+                  className="max-w-full max-h-full rounded-full border-[4px] border-[white] shadow-lg"
+                />
+              </div>
+            </Link>
 
             <div className="flex flex-col gap-1">
               <div className="flex gap-2">
@@ -165,9 +222,7 @@ const HabitsDashboard = () => {
               ]}
               onOptionSelect={(option) => {
                 if (option === "habit") setHabitModalOpen(true);
-                if (option === "daily") {
-                  console.log("Add a Daily selected");
-                }
+                if (option === "daily") setDailyModalOpen(true)
                 if (option === "todo") setTodoModalOpen(true);
               }}
             />
@@ -190,15 +245,17 @@ const HabitsDashboard = () => {
               habits.map((habit) => (
                 <HoverOverlay
                   key={habit.user}
-                  habit={habit}
+                  action={habit}
                   onDelete={handleDelete}
                   onMoveToTop={handleMoveToTop}
                   onMoveToBottom={handleMoveToBottom}
-                  refreshHabits={getAllHabits}
+                  onRefresh={getAllHabits}
                 />
               ))
             ) : (
-              <p className="text-sm text-center">No habits found </p>
+              <p className="text-sm text-center">
+                No habits found add a Habit{" "}
+              </p>
             )}
             <div className="mt-auto text-center text-gray-400 ">
               <div>
@@ -214,7 +271,7 @@ const HabitsDashboard = () => {
           </div>
 
           {/* Dailies */}
-          <div className="flex flex-col gap-1 border-[4px] p-1">
+          <div className="flex flex-col gap-1 border-[4px] bg-[#EDECEE] p-1 overflow-auto scrollbar-thin scrollbar-thumb-[#ebd451e1] scrollbar-track-gray-300 h-full">
             <div className="flex justify-between items-center">
               <h1 className="font-bold text-xl">Dailies</h1>
               <div className="flex gap-4 text-sm">
@@ -223,18 +280,35 @@ const HabitsDashboard = () => {
                 <p>Not Due</p>
               </div>
             </div>
-            <div className="tile flex h-20 rounded-lg overflow-hidden">
-              <span className="p-4 bg-[#F2BE02] text-white">
-                <input type="checkbox" />
-              </span>
-              <p className="w-full px-2 py-1 bg-white">
-                Read 15 mins every day
+            {dailies.length > 0 ? (
+              dailies.map((daily) => (
+                <DailyTile
+                  key={daily.user}
+                  action={daily}
+                  onDelete={deleteDaily}
+                  onMoveToTop={handleMoveToTop}
+                  onMoveToBottom={handleMoveToBottom}
+                  onRefresh={getAllDailies}
+                />
+              ))
+            ) : (
+              <p className="text-sm text-center">No daily found add a daily</p>
+            )}
+
+            <div className="mt-auto text-center text-gray-400 ">
+              <div>
+              <i className="fa-regular fa-calendar-check"></i>
+              </div>
+
+              <p className="text-xs">These are your Dailies</p>
+              <p className="text-xs">
+                Dailies can be checked as much you can complete them
               </p>
             </div>
           </div>
 
           {/* Todos */}
-          <div className="flex flex-col gap-1 border-[4px] p-1 overflow-auto scrollbar-thin scrollbar-thumb-[#ebd451e1] scrollbar-track-gray-300 h-full">
+          <div className="flex flex-col gap-1 border-[4px] bg-[#EDECEE] p-1 overflow-auto scrollbar-thin scrollbar-thumb-[#ebd451e1] scrollbar-track-gray-300 h-full">
             <div className="flex justify-between items-center">
               <h1 className="font-bold text-xl">Todos</h1>
               <div className="flex gap-4 text-sm">
@@ -245,18 +319,29 @@ const HabitsDashboard = () => {
             </div>
             {todos.length > 0 ? (
               todos.map((todo) => (
-                <HoverOverlay
+                <TodoTile
                   key={todo.user}
-                  todo={todo}
+                  action={todo}
                   onDelete={deleteTodo}
                   onMoveToTop={handleMoveToTop}
                   onMoveToBottom={handleMoveToBottom}
-                  refreshHabits={getAllTodos}
+                  onRefresh={getAllTodos}
                 />
               ))
             ) : (
               <p className="text-sm text-center">No todo found add a todo</p>
             )}
+
+            <div className="mt-auto text-center text-gray-400 ">
+              <div>
+                <i className="fa-regular fa-square-check"></i>
+              </div>
+
+              <p className="text-xs">These are your Todos</p>
+              <p className="text-xs">
+                todos can be checked as much you can complete them
+              </p>
+            </div>
           </div>
         </div>
 
@@ -271,7 +356,12 @@ const HabitsDashboard = () => {
           className="bg-white p-6 rounded shadow-lg max-w-lg mx-auto sm:max-w-md md:max-w-lg lg:max-w-xl px-4 sm:px-6 overflow-auto"
           overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"
         >
-          <HabitsPost />
+          <HabitsPost
+            onClose={() => {
+              getAllHabits();
+              setHabitModalOpen(false);
+            }}
+          />
         </Modal>
 
         <Modal
@@ -280,7 +370,27 @@ const HabitsDashboard = () => {
           className="bg-white p-6 rounded shadow-lg max-w-lg mx-auto sm:max-w-md md:max-w-lg lg:max-w-xl px-4 sm:px-6  "
           overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"
         >
-          <TodoPost />
+          <TodoPost
+            onClose={() => {
+              getAllTodos();
+              setTodoModalOpen(false);
+            }}
+          />
+        </Modal>
+
+
+        <Modal
+          isOpen={isDailyModalOpen}
+          onRequestClose={() => setDailyModalOpen(false)}
+          className="bg-white p-6 rounded shadow-lg max-w-lg mx-auto sm:max-w-md md:max-w-lg lg:max-w-xl px-4 sm:px-6  "
+          overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"
+        >
+          <DailyPost
+            onClose={() => {
+              getAllDailies();
+              setDailyModalOpen(false);
+            }}
+          />
         </Modal>
       </>
     </section>

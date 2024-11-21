@@ -5,11 +5,11 @@ import EditHabit from "../pages/HabitsManagement/EditHabit";
 Modal.setAppElement("#root"); // Set this to the root element of your app
 
 const HabitTile = ({
-  habit,
+  action,
   onDelete,
   onMoveToTop,
   onMoveToBottom,
-  refreshHabits,
+  onRefresh,
 }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [showOptions, setShowOptions] = useState(false);
@@ -36,11 +36,11 @@ const HabitTile = ({
 
   // Function to close the modal
   const closeModal = () => {
-    refreshHabits();
+    onRefresh();
     setIsModalOpen(false);
   };
 
-  return habit ? (
+  return action ? (
     <div
       className="relative bg-transparent border rounded-lg shadow-lg hover:border-[#95af00] hover:shadow-xl transition-shadow duration-300"
       onMouseEnter={() => setIsHovered(true)}
@@ -52,7 +52,7 @@ const HabitTile = ({
             <i className="fa-solid fa-plus"></i>
           </span>
 
-          <p className="w-full px-2 py-1 bg-white">{habit?.title || "Untitled Habit"}</p>
+          <p className="w-full px-2 py-1 bg-white">{action?.title || `untitled`}</p>
 
           <span className="p-4 bg-[#f2be02] text-white">
             <i className="fa-solid fa-minus"></i>
@@ -86,7 +86,7 @@ const HabitTile = ({
             <li
               className="flex items-center cursor-pointer hover:bg-gray-100 p-2 rounded"
               onClick={() => {
-                onDelete(habit.id);
+                onDelete(action.id);
                 setShowOptions(false);
               }}
             >
@@ -124,8 +124,8 @@ const HabitTile = ({
         className="bg-white p-6 rounded-lg shadow-lg max-w-md mx-auto my-10"
         overlayClassName="fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center"
       >
-        {/* Render the EditHabit component with the habit ID */}
-        <EditHabit habitId={habit.id} closeModal={closeModal} />
+        {/* Render the EditHabit component with the action ID */}
+        <EditHabit habitId={action.id} closeModal={closeModal} />
       </Modal>
     </div>
   ) : null;

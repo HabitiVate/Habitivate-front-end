@@ -1,9 +1,11 @@
 import { toast } from "react-toastify";
-import { apiPostHabits } from "../../services/habits";
 import Button from "../../components/Button";
 import formPic from "../../assets/Images/habit-stick.jpg";
+import { apiPostDaily } from "../../services/dailies";
 
-const HabitsPost = ({ onClose }) => {
+
+const DailyPost = ({ onClose }) => {
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -18,33 +20,29 @@ const HabitsPost = ({ onClose }) => {
       const data = {
         title: formData.get("title"),
         description: formData.get("description"),
-        duration: formData.get("duration"),
+        tags: formData.get("tags"),
+        streak: formData.get("streak"),
       };
 
-      const response = await apiPostHabits(data);
+      const response = await apiPostDaily(data);
       console.log(response.data);
       toast.success("Successful");
       onClose();
-      
     } catch (error) {
       console.log(error);
-      toast.error("Failed to create habit");
+      toast.error("Failed to create Daily");
     }
   };
 
   return (
     <form
       onSubmit={handleSubmit}
-      className="p-4 bg-white shadow-lg rounded-lg max-w-md mx-auto space-y-4 sm:max-w-lg md:max-w-xl lg:max-w-2xl"
+      className="p-4 bg-white shadow-lg rounded-lg max-w-md mx-auto space-y-4"
     >
       <div className="w-full">
-        <img
-          src={formPic}
-          alt="Habit Creation"
-          className="max-w-full max-h-full rounded mb-4"
-        />
+        <img src={formPic} alt="" className="max-w-full max-h-full" />
       </div>
-      <h2 className="text-xl font-semibold">Create Habit</h2>
+      <h2 className="text-xl font-semibold">Create Daily</h2>
 
       {/* Title Input */}
       <div>
@@ -70,16 +68,23 @@ const HabitsPost = ({ onClose }) => {
       </div>
 
       <div>
-        <label className="block font-medium">Reset Counter</label>
-        <select
-          name="duration"
+        <label className="block font-medium">Tag</label>
+        <input
+          type="text"
+          name="tags"
           className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-        >
-          <option value="daily">Daily</option>
-          <option value="weekly">Weekly</option>
-          <option value="monthly">Monthly</option>
-        </select>
+        />
       </div>
+
+      <div>
+        <label className="block font-medium">Streak</label>
+        <input
+          type="number"
+          name="streak"
+          className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
+
 
       <div className="w-full">
         <Button text="Create" />
@@ -88,4 +93,4 @@ const HabitsPost = ({ onClose }) => {
   );
 };
 
-export default HabitsPost;
+export default DailyPost;

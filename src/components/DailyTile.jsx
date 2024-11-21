@@ -1,11 +1,13 @@
 import { useState, useEffect, useRef } from "react";
 import Modal from "react-modal";
-import EditTodo from "../pages/TodosManagement/EditTodo";
-import { apiUpdateTodo } from "../services/todos";
+import { apiUpdateDaily } from "../services/dailies";
+import EditDaily from "../pages/DailiesManagement/EditDaily";
+
+
 
 Modal.setAppElement("#root"); // Set this to the root element of your app
 
-const TodoTile = ({
+const DailyTile = ({
   action,
   onDelete,
   onMoveToTop,
@@ -21,7 +23,7 @@ const TodoTile = ({
     // Simulate an API call or update the state to toggle completion
 
     action.completed = !action.completed;
-    const res = await apiUpdateTodo(action.id, { completed: action.completed });
+    const res = await apiUpdateDaily(action.id, { completed: action.completed });
     // console.log(res.data);
     // // if(res.status)
     onRefresh(); // Refresh todos to reflect changes
@@ -145,10 +147,10 @@ const TodoTile = ({
         overlayClassName="fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center"
       >
         {/* Render the EditTodo component with the Todo ID */}
-        <EditTodo todoId={action.id} closeModal={closeModal} />
+        <EditDaily dailyId={action.id} closeModal={closeModal} />
       </Modal>
     </div>
   ) : null;
 };
 
-export default TodoTile;
+export default DailyTile;

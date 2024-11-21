@@ -12,6 +12,8 @@ import EditProfile from "./pages/Authentication/profile/EditProfile";
 import EditHabit from "./pages/HabitsManagement/EditHabit";
 import EditTodo from "./pages/TodosManagement/EditTodo";
 import TodoPost from "./pages/TodosManagement/TodoPost";
+import EditDaily from "./pages/DailiesManagement/EditDaily";
+import DailyPost from "./pages/DailiesManagement/DailyPost";
 
 const router = createBrowserRouter([
   {
@@ -34,7 +36,7 @@ const router = createBrowserRouter([
     element: <Profile />,
   },
   {
-    path: "/edit-profile",
+    path: "/edit-profile/:profileId",
     element: <EditProfile />,
   },
   {
@@ -46,12 +48,20 @@ const router = createBrowserRouter([
     element: <TodoPost />,
   },
   {
+    path: "/create-dailies",
+    element: <DailyPost />,
+  },
+  {
     path: "/edit-habit/:habitId",
     element: <EditHabit />,
   },
   {
     path: "/edit-todo/:todoId",
     element: <EditTodo />,
+  },
+  {
+    path: "/edit-daily/:dailyId",
+    element: <EditDaily />,
   },
 
   {
