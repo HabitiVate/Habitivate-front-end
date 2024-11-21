@@ -8,8 +8,8 @@ const EditDaily = ({ dailyId, closeModal }) => {
   const [description, setDescription] = useState("");
   const [tags, setTags] = useState("");
   const [streak, setDueDate] = useState();
-  const [completed, setCompleted] = useState();
-  // const [completed, setCompleted] = useState("")
+//   const [completed, setCompleted] = useState();
+
 
   const handleChange = (e) => {
     setTags(e.target.value);
@@ -23,7 +23,7 @@ const EditDaily = ({ dailyId, closeModal }) => {
       setDescription(description);
       setTags(tags);
       setDueDate(streak);
-      setCompleted(completed)
+    //   setCompleted(completed)
     } catch (error) {
       console.log("Error fetching daily", error);
     }
@@ -99,7 +99,7 @@ const EditDaily = ({ dailyId, closeModal }) => {
             className="w-full p-2 border border-gray-300 rounded-md"
           />
         </div>
-        <div className="mb-4">
+        {/* <div className="mb-4">
           <label className="block text-gray-700 font-medium mb-2">
             completed
           </label>
@@ -110,7 +110,7 @@ const EditDaily = ({ dailyId, closeModal }) => {
             required
             className="w-full p-2 border border-gray-300 rounded-md"
           />
-        </div>
+        </div> */}
 
 
 
