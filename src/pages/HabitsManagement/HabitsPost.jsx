@@ -4,7 +4,6 @@ import Button from "../../components/Button";
 import formPic from "../../assets/Images/habit-stick.jpg";
 
 const HabitsPost = ({ onClose }) => {
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
@@ -25,7 +24,6 @@ const HabitsPost = ({ onClose }) => {
       console.log(response.data);
       toast.success("Successful");
       onClose();
-      
     } catch (error) {
       console.log(error);
       toast.error("Failed to create habit");
@@ -33,58 +31,57 @@ const HabitsPost = ({ onClose }) => {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="p-4 bg-white shadow-lg rounded-lg max-w-md mx-auto space-y-4 sm:max-w-lg md:max-w-xl lg:max-w-2xl"
-    >
-      <div className="w-full">
-        <img
-          src={formPic}
-          alt="Habit Creation"
-          className="max-w-full max-h-full rounded mb-4"
-        />
-      </div>
-      <h2 className="text-xl font-semibold">Create Habit</h2>
+    <div className=" flex w-[80%] justify-center mx-auto bg-transparent">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-3 bg-white p-4 shadow-lg rounded-lg ">
+        <div className="w-full">
+          <img
+            src={formPic}
+            alt="Habit Creation"
+            className="max-w-full max-h-full rounded mb-4"
+          />
+        </div>
+        <h2 className="text-xl font-semibold">Create Habit</h2>
 
-      {/* Title Input */}
-      <div>
-        <label className="block font-medium">Title</label>
-        <input
-          type="text"
-          name="title"
-          placeholder="e.g., Drink Water"
-          className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-          required
-        />
-      </div>
+        {/* Title Input */}
+        <div>
+          <label className="block font-medium">Title</label>
+          <input
+            type="text"
+            name="title"
+            placeholder="e.g., Drink Water"
+            className="w-full p-2 border rounded-lg focus:outline-none focus:ring focus:ring-[#95af00]"
+            required
+          />
+        </div>
 
-      <div>
-        <label className="block font-medium">Description</label>
-        <textarea
-          type=""
-          name="description"
-          placeholder=""
-          className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-          required
-        />
-      </div>
+        <div>
+          <label className="block font-medium">Description</label>
+          <textarea
+            type=""
+            name="description"
+            placeholder=""
+            className="w-full p-2 border rounded-lg focus:outline-none focus:ring focus:ring-[#95af00]"
+            required
+          />
+        </div>
 
-      <div>
-        <label className="block font-medium">Reset Counter</label>
-        <select
-          name="duration"
-          className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-        >
-          <option value="daily">Daily</option>
-          <option value="weekly">Weekly</option>
-          <option value="monthly">Monthly</option>
-        </select>
-      </div>
+        <div>
+          <label className="block font-medium">Reset Counter</label>
+          <select
+            name="duration"
+            className="w-full p-2 border rounded-lg focus:outline-none focus:ring focus:ring-[#95af00]"
+          >
+            <option value="daily">Daily</option>
+            <option value="weekly">Weekly</option>
+            <option value="monthly">Monthly</option>
+          </select>
+        </div>
 
-      <div className="w-full">
-        <Button text="Create" />
-      </div>
-    </form>
+        <div className="w-full">
+          <Button text="Create" />
+        </div>
+      </form>
+    </div>
   );
 };
 

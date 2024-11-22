@@ -58,7 +58,7 @@ const EditTodo = ({ todoId, closeModal }) => {
             name="title"
             type="text"
             required
-            className="w-full p-2 border border-gray-300 rounded-md"
+            className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-[#95af00]"
           />
         </div>
 
@@ -70,7 +70,7 @@ const EditTodo = ({ todoId, closeModal }) => {
             required
             defaultValue={description}
             name="description"
-            className="w-full p-2 border border-gray-300 rounded-md"
+            className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-[#95af00]"
           ></textarea>
         </div>
 
@@ -80,7 +80,7 @@ const EditTodo = ({ todoId, closeModal }) => {
             value={category}
             onChange={handleChange}
             name="category"
-            className="w-full p-2 border border-gray-300 rounded-md"
+            className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-[#95af00]"
           >
             <option value="Education">Education</option>
             <option value="Fitness">Fitness</option>
@@ -98,7 +98,7 @@ const EditTodo = ({ todoId, closeModal }) => {
             name="dueDate"
             type="date"
             required
-            className="w-full p-2 border border-gray-300 rounded-md"
+            className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-[#95af00]"
           />
         </div>
 
@@ -111,7 +111,7 @@ const EditTodo = ({ todoId, closeModal }) => {
             name="reminder"
             type="date"
             required
-            className="w-full p-2 border border-gray-300 rounded-md"
+            className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-[#95af00]"
           />
         </div>
 

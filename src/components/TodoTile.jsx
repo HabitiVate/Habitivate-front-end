@@ -61,8 +61,11 @@ const TodoTile = ({
     >
       <div className="rounded-lg overflow-hidden">
         <div className="tile flex justify-center h-20">
-          <span className={` ${
-              action.completed ? "bg-[#8a8a89]" : "bg-[#F2BE02]"}  p-4  text-white`}>
+          <span
+            className={` ${
+              action.completed ? "bg-[#8a8a89]" : "bg-[#F2BE02]"
+            }  p-4  text-white`}
+          >
             <input
               checked={action.completed}
               onChange={handleToggleComplete}

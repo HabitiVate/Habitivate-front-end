@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-// import avatar from "../assets/Images/avatar.jpg";
 import Button from "../components/Button";
 import Search from "../components/Search";
 import { apiGetHabits, apiDeleteHabits } from "../services/habits";
@@ -10,23 +9,21 @@ import { apiGetProfile } from "../services/profile";
 import Modal from "react-modal";
 import HabitsPost from "../pages/HabitsManagement/HabitsPost";
 import TodoPost from "../pages/TodosManagement/TodoPost";
-import Logo from "../components/Logo";
 import Footer from "../components/Footer";
 import { logout } from "../services/config";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import TodoTile from "../components/TodoTile";
 import { apiDeleteDaily, apiGetDailies } from "../services/dailies";
 import DailyTile from "../components/DailyTile";
 import DailyPost from "../pages/DailiesManagement/DailyPost";
-import Loader from "../components/Loader";
-
-
-
+import placeHolderImg from "../assets/Images/placeholder-img.png"
+import Profile from "../pages/Authentication/profile/Profile";
+// import Loader from "../components/Loader";
 
 Modal.setAppElement("#root");
 
 const HabitsDashboard = () => {
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
   const [habits, setHabits] = useState([]);
   const [todos, setTodos] = useState([]);
   const [dailies, setDailies] = useState([]);
@@ -34,6 +31,11 @@ const HabitsDashboard = () => {
   const [isHabitModalOpen, setHabitModalOpen] = useState(false);
   const [isTodoModalOpen, setTodoModalOpen] = useState(false);
   const [isDailyModalOpen, setDailyModalOpen] = useState(false);
+  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false)
+  const [imgSrc, setImgSrc] = useState(placeHolderImg)
+
+
+
   const navigate = useNavigate();
 
   // Fetch user profile
@@ -47,17 +49,27 @@ const HabitsDashboard = () => {
     }
   };
 
+  // Update imgSrc whenever userData.avatar changes
+  useEffect(() => {
+    if (userData.avatar) {
+      setImgSrc(`https://savefiles.org/${userData.avatar}?shareable_link=471`);
+    }
+  }, [userData]);
+
+
+
   // Fetch habits
   const getAllHabits = async () => {
     try {
-      setLoading(true)
+      // setLoading(true);
       const response = await apiGetHabits();
       console.log(response.data);
       setHabits(response.data);
     } catch (error) {
       console.log(error);
-    }finally {
-      setLoading(false)}
+    } finally {
+      setLoading(false);
+    }
   };
 
   // fetch dailies
@@ -156,28 +168,40 @@ const HabitsDashboard = () => {
       <>
         <>
           <nav className="flex justify-between w-full items-center p-2">
-            <div className="bg-[#2b2b2b] py-1 px-5 rounded-md">
-              <Logo />
+            <div className="py-1 px-5 rounded-md bg-[#AEC141] text-white font-bold">
+              Habitivate
             </div>
 
-            <button className=" bg-slate-400" onClick={handleLogout}>
-              logout <i className="fa-solid fa-right-from-bracket"></i>
-            </button>
+            <div className="flex gap-5 items-center">
+             
+                <button onClick={() => setIsProfileModalOpen(true) }>
+                  <i className="fa-solid fa-user text-2xl"></i>
+                </button>
+  
+
+              <Button
+                text={"logout"}
+                icon={<i className="fa-solid fa-right-from-bracket mr-2"></i>}
+                onClick={handleLogout}
+              />
+            </div>
+
+            {/* <button className=" bg-slate-400" onClick={handleLogout}>
+              
+            </button> */}
           </nav>
         </>
         {/* Header */}
-        <header className="flex flex-col sm:flex-row items-center w-full h-[20%] px-3 py-2 rounded-sm shadow-md">
+        <header className="flex flex-col sm:flex-row items-center w-full h-[20%] px-3 py-2 rounded-sm shadow-md border-[4px]">
           <div className="h-full profile p-1 flex gap-5">
-            <Link to={"/profile-page"}>
-              <div className="h-full">
-                <img
-                  src={`https://savefiles.org/${userData.avatar}?shareable_link=471`}
-                  alt="avatar"
-                  className="max-w-full max-h-full rounded-full border-[4px] border-[white] shadow-lg"
-                />
-              </div>
-            </Link>
-
+            <div className="h-full">
+              <img
+                src={imgSrc}
+                alt="avatar"
+                onError={() => setImgSrc(placeHolderImg)}
+                className="max-w-full max-h-full rounded border-[4px] border-[white] shadow-lg"
+              />
+            </div>
             <div className="flex flex-col gap-1">
               <div className="flex gap-2">
                 <p>{`${userData.firstName || ""} ${
@@ -222,7 +246,7 @@ const HabitsDashboard = () => {
               ]}
               onOptionSelect={(option) => {
                 if (option === "habit") setHabitModalOpen(true);
-                if (option === "daily") setDailyModalOpen(true)
+                if (option === "daily") setDailyModalOpen(true);
                 if (option === "todo") setTodoModalOpen(true);
               }}
             />
@@ -230,7 +254,7 @@ const HabitsDashboard = () => {
         </div>
 
         {/* Main Content */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 px-2 mt-2 overflow-auto h-full">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3  mt-2 overflow-auto h-full">
           {/* Habits */}
           <div className="flex flex-col gap-1 border-[4px] bg-[#EDECEE] p-1 overflow-auto scrollbar-thin scrollbar-thumb-[#ebd451e1] scrollbar-track-gray-300 hover:shadow-xl">
             <div className="flex justify-between items-center">
@@ -297,7 +321,7 @@ const HabitsDashboard = () => {
 
             <div className="mt-auto text-center text-gray-400 ">
               <div>
-              <i className="fa-regular fa-calendar-check"></i>
+                <i className="fa-regular fa-calendar-check"></i>
               </div>
 
               <p className="text-xs">These are your Dailies</p>
@@ -353,7 +377,7 @@ const HabitsDashboard = () => {
         <Modal
           isOpen={isHabitModalOpen}
           onRequestClose={() => setHabitModalOpen(false)}
-          className="bg-white p-6 rounded shadow-lg max-w-lg mx-auto sm:max-w-md md:max-w-lg lg:max-w-xl px-4 sm:px-6 overflow-auto"
+          className=" p-6 rounded shadow-lg max-w-lg mx-auto sm:max-w-md md:max-w-lg lg:max-w-xl px-4 sm:px-6 overflow-auto"
           overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"
         >
           <HabitsPost
@@ -367,7 +391,7 @@ const HabitsDashboard = () => {
         <Modal
           isOpen={isTodoModalOpen}
           onRequestClose={() => setTodoModalOpen(false)}
-          className="bg-white p-6 rounded shadow-lg max-w-lg mx-auto sm:max-w-md md:max-w-lg lg:max-w-xl px-4 sm:px-6  "
+          className=" p-6 rounded shadow-lg max-w-lg mx-auto sm:max-w-md md:max-w-lg lg:max-w-xl px-4 sm:px-6  "
           overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"
         >
           <TodoPost
@@ -378,17 +402,30 @@ const HabitsDashboard = () => {
           />
         </Modal>
 
-
         <Modal
           isOpen={isDailyModalOpen}
           onRequestClose={() => setDailyModalOpen(false)}
-          className="bg-white p-6 rounded shadow-lg max-w-lg mx-auto sm:max-w-md md:max-w-lg lg:max-w-xl px-4 sm:px-6  "
+          className=" p-6 rounded shadow-lg max-w-lg mx-auto sm:max-w-md md:max-w-lg lg:max-w-xl px-4 sm:px-6  "
           overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"
         >
           <DailyPost
             onClose={() => {
               getAllDailies();
               setDailyModalOpen(false);
+            }}
+          />
+        </Modal>
+
+
+        <Modal
+          isOpen={isProfileModalOpen}
+          onRequestClose={() => setIsProfileModalOpen(false)}
+          className="p-6 rounded shadow-lg max-w-lg mx-auto sm:max-w-md md:max-w-lg lg:max-w-xl px-4 sm:px-6  "
+          overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"
+        >
+          <Profile
+            onClose={() => {
+              setIsProfileModalOpen(false);
             }}
           />
         </Modal>

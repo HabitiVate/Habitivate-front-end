@@ -11,9 +11,6 @@ const EditDaily = ({ dailyId, closeModal }) => {
 //   const [completed, setCompleted] = useState();
 
 
-  const handleChange = (e) => {
-    setTags(e.target.value);
-  };
 
   const fetcDaily = async () => {
     try {
@@ -58,7 +55,7 @@ const EditDaily = ({ dailyId, closeModal }) => {
             name="title"
             type="text"
             required
-            className="w-full p-2 border border-gray-300 rounded-md"
+            className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-[#95af00]"
           />
         </div>
 
@@ -70,12 +67,12 @@ const EditDaily = ({ dailyId, closeModal }) => {
             required
             defaultValue={description}
             name="description"
-            className="w-full p-2 border border-gray-300 rounded-md"
+            className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-[#95af00]"
           ></textarea>
         </div>
 
         <div className="mb-4">
-          <label className="block text-gray-700 font-medium mb-2">
+          <label className="block text-gray-700 font-medium mb-2 focus:outline-none focus:ring focus:ring-[#95af00]">
             Tag
           </label>
           <input
@@ -83,7 +80,7 @@ const EditDaily = ({ dailyId, closeModal }) => {
             name="tags"
             type="text"
             required
-            className="w-full p-2 border border-gray-300 rounded-md"
+            className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-[#95af00]"
           />
         </div>
 
@@ -96,21 +93,9 @@ const EditDaily = ({ dailyId, closeModal }) => {
             name="streak"
             type="number"
             required
-            className="w-full p-2 border border-gray-300 rounded-md"
+            className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-[#95af00]"
           />
         </div>
-        {/* <div className="mb-4">
-          <label className="block text-gray-700 font-medium mb-2">
-            completed
-          </label>
-          <input
-            defaultValue={completed}
-            name="completed"
-            type="checkbox"
-            required
-            className="w-full p-2 border border-gray-300 rounded-md"
-          />
-        </div> */}
 
 
 

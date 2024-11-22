@@ -75,9 +75,12 @@ const DailyTile = ({
           <p
             className={`text-sm ${
               action.completed ? "line-through text-gray-500" : "text-black"
-            } w-full px-2 py-1 bg-white`}
+            } w-full px-2 py-1 bg-white flex flex-col`}
           >
             {action?.title || "Untitled"}
+            <p className="text-xs text-end px-7 mr-10">Description: {action.description}</p>
+        <p className="text-xs text-end px-7 mr-10 text-gray-400 font-bold flex justify-end items-center gap-4"><i className="fa-solid fa-forward"></i>{action.streak} {" "} <p className="italic bg-slate-100 px-2 rounded">#{action.tags}</p></p>
+            
           </p>
         </div>
       </div>

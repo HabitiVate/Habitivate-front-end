@@ -59,7 +59,7 @@ const EditHabit = ({ habitId, closeModal }) => {
             name="title"
             type="text"
             required
-            className="w-full p-2 border border-gray-300 rounded-md"
+            className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-[#95af00]"
           />
         </div>
 
@@ -71,7 +71,7 @@ const EditHabit = ({ habitId, closeModal }) => {
             required
             defaultValue={description}
             name="description"
-            className="w-full p-2 border border-gray-300 rounded-md"
+            className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-[#95af00]"
           ></textarea>
         </div>
 
@@ -81,7 +81,7 @@ const EditHabit = ({ habitId, closeModal }) => {
             value={duration}
             onChange={handleChange}
             name="duration"
-            className="w-full p-2 border border-gray-300 rounded-md"
+            className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-[#95af00]"
           >
             <option value="Daily">Daily</option>
             <option value="Weekly">Weekly</option>

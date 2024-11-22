@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 
-const Button = ({ icon, text, options = [], onOptionSelect }) => {
+const Button = ({ icon, text, options = [], onOptionSelect, onClick }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const buttonRef = useRef(null);
 
