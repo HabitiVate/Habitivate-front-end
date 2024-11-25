@@ -1,50 +1,45 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
+import { apiSearch } from "../services/search";
 
-const Search = ({ habits, dailies, todos }) => {
-  const [query, setQuery] = useState('');
-  const [results, setResults] = useState([]);
+const Search = ({ onSearch }) => {
+  const [query, setQuery] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
-  // Function to handle the auto-search logic
-  const handleSearch = (query) => {
-    const searchResults = [];
-
-    if (query) {
-      const queryLowerCase = query.toLowerCase();
-
-      searchResults.push(
-        ...habits.filter(habit => habit.name.toLowerCase().includes(queryLowerCase)),
-        ...dailies.filter(daily => daily.name.toLowerCase().includes(queryLowerCase)),
-        ...todos.filter(todo => todo.name.toLowerCase().includes(queryLowerCase))
-      );
-    }
-
-    setResults(searchResults);
-  };
-
-  // Watch for changes in the input field to trigger search
   useEffect(() => {
-    handleSearch(query);
-  }, [query]);
+    const fetchResults = async () => {
+      if (query.trim()) {
+        setIsLoading(true);
+        try {
+          // Fetch results from API
+          const response = await apiSearch(query);
+          // Ensure the response has types: habit, todo, daily
+          onSearch(response.data); // Pass results to parent
+        } catch (error) {
+          console.error("Error fetching search results:", error);
+          onSearch([]); // Clear results on error
+        } finally {
+          setIsLoading(false);
+        }
+      } else {
+        onSearch([]); // Clear results when the query is empty
+      }
+    };
+
+    const debounceTimer = setTimeout(fetchResults, 300); // Debounce for better UX
+    return () => clearTimeout(debounceTimer); // Cleanup debounce timer
+  }, [query, onSearch]);
 
   return (
-    <div className="">
+    <div className="p-4">
       <input
         type="text"
-        className="w-full px-4 py-1 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#95af00]"
+        className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#95af00]"
         placeholder="Search for habits, dailies, or todos..."
         value={query}
         onChange={(e) => setQuery(e.target.value)}
       />
-
-      {results.length > 0 && (
-        <div className="mt-4 bg-white border rounded-md shadow-md">
-          {results.map((result, index) => (
-            <div key={index} className="p-2 border-b last:border-none">
-              {result.name}
-            </div>
-          ))}
-        </div>
-      )}
+      {/* Loading Indicator */}
+      {isLoading && <p className="mt-2 text-sm text-gray-500">Loading...</p>}
     </div>
   );
 };

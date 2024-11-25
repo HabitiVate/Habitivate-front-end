@@ -33,6 +33,7 @@ const HabitsDashboard = () => {
   const [isDailyModalOpen, setDailyModalOpen] = useState(false);
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false)
   const [imgSrc, setImgSrc] = useState(placeHolderImg)
+  const [searchResults, setSearchResults] = useState([]);
 
 
 
@@ -156,6 +157,20 @@ const HabitsDashboard = () => {
     getUserAccount();
   }, []);
 
+  useEffect(() => {
+    // Separate the results into habits, dailies, and todos
+    const filteredHabits = searchResults.filter((item) => item.type === "habit");
+    const filteredDailies = searchResults.filter((item) => item.type === "daily");
+    const filteredTodos = searchResults.filter((item) => item.type === "todo");
+
+    setHabits(filteredHabits);
+    setDailies(filteredDailies);
+    setTodos(filteredTodos);
+  }, [searchResults]);
+
+
+
+
   const handleLogout = () => {
     logout; // Call the logout function
     const confirmed = window.confirm("Are you sure you want to log out?");
@@ -171,6 +186,10 @@ const HabitsDashboard = () => {
             <div className="py-1 px-5 rounded-md bg-[#AEC141] text-white font-bold">
               Habitivate
             </div>
+
+            <h1 className="text-2xl sm:text-3xl font-extrabold px-4 border-[#AEC141] border-[2px] rounded">
+              Hi! {userData.firstName}. Ready to Habitivate today?
+            </h1>
 
             <div className="flex gap-5 items-center">
              
@@ -192,8 +211,8 @@ const HabitsDashboard = () => {
           </nav>
         </>
         {/* Header */}
-        <header className="flex flex-col sm:flex-row items-center w-full h-[20%] px-3 py-2 rounded-sm shadow-md border-[4px]">
-          <div className="h-full profile p-1 flex gap-5">
+        <header className="flex flex-col sm:flex-row items-center w-full h-[25%] px-3 py-2 rounded-sm shadow-md border-[4px]">
+          <div className="h-full w-[30%] profile p-1 flex gap-5">
             <div className="h-full">
               <img
                 src={imgSrc}
@@ -202,29 +221,29 @@ const HabitsDashboard = () => {
                 className="max-w-full max-h-full rounded border-[4px] border-[white] shadow-lg"
               />
             </div>
-            <div className="flex flex-col gap-1">
+            <div className="flex flex-col gap-1 w-full">
               <div className="flex gap-2">
                 <p>{`${userData.firstName || ""} ${
                   userData.lastName || ""
                 }`}</p>
               </div>
               <p>@{userData.userName}</p>
-              <i className="fa-solid fa-heart text-red-500"></i>
-              <i className="fa-solid fa-star text-orange-300"></i>
+              
+              <div className="flex gap-2 items-center"><i className="fa-solid fa-heart text-red-500"></i><div className="w-full rounded bg-red-600 h-[4px]"></div>50/50</div>
+              <div className="flex gap-2 items-center"><i className="fa-solid fa-star text-orange-300"></i><div className="w-full rounded bg-orange-400 h-[4px]"></div>100%</div>
+              
             </div>
           </div>
 
-          <div className="m-auto text-center mt-5 sm:mt-0 sm:text-left sm:w-[70%]">
-            <h1 className="text-2xl sm:text-3xl font-extrabold">
-              Hi! {userData.firstName}. Ready to Habitivate today?
-            </h1>
-            <p>Create or complete a task.</p>
-            <div className="ml-auto w-[50%] text-end text-[11px] italic">
+          <div className=" flex justify-center items-center mx-auto text-center mt-5 sm:mt-0 sm:text-left sm:w-[70%]">
+            
+            {/* <p>Create or complete a task.</p> */}
+            <div className=" w-[50%] text-start text-lg italic">
               <p>
                 Small habits, when repeated consistently, lead to remarkable
                 results
               </p>
-              <p>~ James Clear</p>
+              <p className="text-end">~ James Clear</p>
             </div>
           </div>
         </header>
@@ -232,7 +251,7 @@ const HabitsDashboard = () => {
         {/* Search and Add Task Button */}
         <div className="flex flex-col sm:flex-row justify-around items-center my-5 sm:my-3 gap-5 sm:gap-10">
           <div className="w-full sm:w-[30%]">
-            <Search />
+            <Search onSearch={setSearchResults} />
           </div>
 
           <div className="w-full sm:w-[auto]">
